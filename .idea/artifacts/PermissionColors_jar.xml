@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="PermissionColors:jar">
+    <output-path>$PROJECT_DIR$/out</output-path>
+    <root id="archive" name="PermissionColors.jar">
+      <element id="module-output" name="PermissionColors" />
+    </root>
+  </artifact>
+</component>
