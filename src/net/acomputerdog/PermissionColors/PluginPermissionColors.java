@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,27 +17,22 @@ import java.util.Map;
 public class PluginPermissionColors extends JavaPlugin implements Listener {
     private Map<Player, String> playerColors;
 
+    //don't reset in onEnable or onDisable
+    private boolean reloading = false;
+
     @Override
     public void onEnable(){
         playerColors = new HashMap<>();
-        for (Player p : getServer().getOnlinePlayers()) {
-            changeColors(p);
+        getServer().getOnlinePlayers().forEach(this::changeColors);
+        if (!reloading) {
+            getServer().getPluginManager().registerEvents(this, this);
         }
-        getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
     public void onDisable() {
         playerColors = null;
     }
-
-/*
-    @EventHandler(priority = EventPriority.LOW)
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
-        changeColors(player);
-    }
-*/
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLogin(PlayerJoinEvent e) {
@@ -58,8 +52,10 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
             if (sender.hasPermission("permissioncolors.command.reload")) {
                 sender.sendMessage(ChatColor.YELLOW + "Reloading, please wait...");
                 getLogger().info("Reloading...");
+                reloading = true;
                 onDisable();
                 onEnable();
+                reloading = false;
                 getLogger().info("Done.");
                 sender.sendMessage(ChatColor.YELLOW + "Done.");
             } else {
