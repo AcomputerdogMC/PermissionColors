@@ -26,4 +26,4 @@ Permissions (can combine up to one color with up to one style):
   permissioncolors.format.underline   
   permissioncolors.format.italic   
   
-  Note: After changing permissions you will need to reload the plugin with /permissions reload before changes will apply.
+  Note: After changing permissions you will need to reload the plugin with /permissioncolors reload before changes will apply.
