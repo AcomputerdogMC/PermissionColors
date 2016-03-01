@@ -8,17 +8,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/bukkit-1.7.2-R0.3-20140202.193209-23.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/bukkit-1.7.2-R0.3-20140202.193209-23.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="spigot-1.8.8" level="project" />
+    <orderEntry type="library" name="Spigot-1.9" level="application" />
   </component>
 </module>
