@@ -123,17 +123,16 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
     }
 
     private void changeColors(Player player) {
-        String oldName = player.getDisplayName();
         String color = getColorForPlayer(player);
-        String newName = color + oldName + ChatColor.WHITE.toString() + ChatColor.RESET.toString();
-        player.setDisplayName(newName);
-        player.setPlayerListName(newName);
-        /*
-        if (newName.length() <= 16) {
-            player.setPlayerListName(newName);
+        String listName = color + player.getName();
+        String displayName = listName + ChatColor.WHITE.toString() + ChatColor.RESET.toString();
+
+        player.setDisplayName(displayName);
+
+        if (listName.length() <= 16) {
+            player.setPlayerListName(listName);
+        } else {
+            getLogger().warning("Player \"" + player.getName() + "\"'s name is too long!");
         }
-        */
-        player.setCustomNameVisible(true);
-        player.setCustomName(newName);
     }
 }

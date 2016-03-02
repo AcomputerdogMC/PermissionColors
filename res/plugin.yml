@@ -1,6 +1,6 @@
 name: PermissionColors
 main: net.acomputerdog.PermissionColors.PluginPermissionColors
-version: 0.3.2
+version: 0.3.4
 description: Use a permissions structure to color-code player names.
 author: acomputerdog
 
