@@ -14,7 +14,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Plugin main class
+ */
 public class PluginPermissionColors extends JavaPlugin implements Listener {
+    /**
+     * Map of currently logged on players to their color
+     */
     private Map<Player, String> playerColors;
 
     //don't reset in onEnable or onDisable
@@ -23,7 +29,11 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
     @Override
     public void onEnable(){
         playerColors = new HashMap<>();
+
+        // update colors for all online players
         getServer().getOnlinePlayers().forEach(this::changeColors);
+
+        // register events only on first load
         if (!reloading) {
             getServer().getPluginManager().registerEvents(this, this);
         }
@@ -53,8 +63,10 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.YELLOW + "Reloading, please wait...");
                 getLogger().info("Reloading...");
                 reloading = true;
+
                 onDisable();
                 onEnable();
+
                 reloading = false;
                 getLogger().info("Done.");
                 sender.sendMessage(ChatColor.YELLOW + "Done.");
@@ -68,58 +80,76 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
     }
 
     private String getColorForPlayer(Player player) {
+        // check for cached color string
         String colorStr = playerColors.get(player);
+
+        // if not found, then generate
         if (colorStr == null) {
-            ChatColor color = null;
-            ChatColor format = null;
-            if (player.hasPermission("permissioncolors.color.black")) {
-                color = ChatColor.BLACK;
-            } else if (player.hasPermission("permissioncolors.color.dark_blue")) {
-                color = ChatColor.DARK_BLUE;
-            } else if (player.hasPermission("permissioncolors.color.dark_green")) {
-                color = ChatColor.DARK_GREEN;
-            } else if (player.hasPermission("permissioncolors.color.dark_aqua")) {
-                color = ChatColor.DARK_AQUA;
-            } else if (player.hasPermission("permissioncolors.color.dark_red")) {
-                color = ChatColor.DARK_RED;
-            } else if (player.hasPermission("permissioncolors.color.dark_purple")) {
-                color = ChatColor.DARK_PURPLE;
-            } else if (player.hasPermission("permissioncolors.color.gold")) {
-                color = ChatColor.GOLD;
-            } else if (player.hasPermission("permissioncolors.color.grey")) {
-                color = ChatColor.GRAY;
-            } else if (player.hasPermission("permissioncolors.color.dark_grey")) {
-                color = ChatColor.DARK_GRAY;
-            } else if (player.hasPermission("permissioncolors.color.blue")) {
-                color = ChatColor.BLUE;
-            } else if (player.hasPermission("permissioncolors.color.green")) {
-                color = ChatColor.GREEN;
-            } else if (player.hasPermission("permissioncolors.color.aqua")) {
-                color = ChatColor.AQUA;
-            } else if (player.hasPermission("permissioncolors.color.red")) {
-                color = ChatColor.RED;
-            } else if (player.hasPermission("permissioncolors.color.light_purple")) {
-                color = ChatColor.LIGHT_PURPLE;
-            } else if (player.hasPermission("permissioncolors.color.yellow")) {
-                color = ChatColor.YELLOW;
-            }
+            ChatColor color = getColorByPermission(player);
+            ChatColor format = getFormatByPermission(player);
 
-            if (player.hasPermission("permissioncolors.format.scrambled")) {
-                format = ChatColor.MAGIC;
-            } else if (player.hasPermission("permissioncolors.format.bold")) {
-                format = ChatColor.BOLD;
-            } else if (player.hasPermission("permissioncolors.format.strikethrough")) {
-                format = ChatColor.STRIKETHROUGH;
-            } else if (player.hasPermission("permissioncolors.format.underline")) {
-                format = ChatColor.UNDERLINE;
-            } else if (player.hasPermission("permissioncolors.format.italic")) {
-                format = ChatColor.ITALIC;
+            colorStr = "";
+            if (color != null) {
+                colorStr += color.toString();
             }
-
-            colorStr =  (color == null ? "" : color.toString()) + (format == null ? "" : format.toString());
+            if (format != null) {
+                colorStr += format.toString();
+            }
             playerColors.put(player, colorStr);
         }
         return colorStr;
+    }
+
+    private ChatColor getColorByPermission(Player player) {
+        if (player.hasPermission("permissioncolors.color.black")) {
+            return ChatColor.BLACK;
+        } else if (player.hasPermission("permissioncolors.color.dark_blue")) {
+            return ChatColor.DARK_BLUE;
+        } else if (player.hasPermission("permissioncolors.color.dark_green")) {
+            return ChatColor.DARK_GREEN;
+        } else if (player.hasPermission("permissioncolors.color.dark_aqua")) {
+            return ChatColor.DARK_AQUA;
+        } else if (player.hasPermission("permissioncolors.color.dark_red")) {
+            return ChatColor.DARK_RED;
+        } else if (player.hasPermission("permissioncolors.color.dark_purple")) {
+            return ChatColor.DARK_PURPLE;
+        } else if (player.hasPermission("permissioncolors.color.gold")) {
+            return ChatColor.GOLD;
+        } else if (player.hasPermission("permissioncolors.color.grey")) {
+            return ChatColor.GRAY;
+        } else if (player.hasPermission("permissioncolors.color.dark_grey")) {
+            return ChatColor.DARK_GRAY;
+        } else if (player.hasPermission("permissioncolors.color.blue")) {
+            return ChatColor.BLUE;
+        } else if (player.hasPermission("permissioncolors.color.green")) {
+            return ChatColor.GREEN;
+        } else if (player.hasPermission("permissioncolors.color.aqua")) {
+            return ChatColor.AQUA;
+        } else if (player.hasPermission("permissioncolors.color.red")) {
+            return ChatColor.RED;
+        } else if (player.hasPermission("permissioncolors.color.light_purple")) {
+            return ChatColor.LIGHT_PURPLE;
+        } else if (player.hasPermission("permissioncolors.color.yellow")) {
+            return ChatColor.YELLOW;
+        } else {
+            return null;
+        }
+    }
+
+    private ChatColor getFormatByPermission(Player player) {
+        if (player.hasPermission("permissioncolors.format.scrambled")) {
+            return ChatColor.MAGIC;
+        } else if (player.hasPermission("permissioncolors.format.bold")) {
+            return ChatColor.BOLD;
+        } else if (player.hasPermission("permissioncolors.format.strikethrough")) {
+            return ChatColor.STRIKETHROUGH;
+        } else if (player.hasPermission("permissioncolors.format.underline")) {
+            return ChatColor.UNDERLINE;
+        } else if (player.hasPermission("permissioncolors.format.italic")) {
+            return ChatColor.ITALIC;
+        } else {
+            return null;
+        }
     }
 
     private void changeColors(Player player) {
@@ -132,7 +162,7 @@ public class PluginPermissionColors extends JavaPlugin implements Listener {
         if (listName.length() <= 16) {
             player.setPlayerListName(listName);
         } else {
-            getLogger().warning("Player \"" + player.getName() + "\"'s name is too long!");
+            getLogger().warning("Player \"" + player.getName() + "\"'s name is too long to apply their player list color.");
         }
     }
 }
