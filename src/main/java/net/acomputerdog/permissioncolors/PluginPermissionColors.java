@@ -1,4 +1,4 @@
-package net.acomputerdog.PermissionColors;
+package net.acomputerdog.permissioncolors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

@@ -1,12 +1,12 @@
 name: ${name}
-main: net.acomputerdog.PermissionColors.PluginPermissionColors
+main: net.acomputerdog.permissioncolors.PluginPermissionColors
 version: ${version}
 description: Use a permissions structure to color-code player names.
 author: acomputerdog
 
 commands:
   permissioncolors:
-    description: Main PermissionColors command
+    description: Main permissioncolors command
     permission: permissioncolors.command
     usage: /permissioncolors <command>
     aliases: [permcolors, permcol, pc]
